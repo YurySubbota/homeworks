@@ -1,66 +1,106 @@
-# Homework8
+import json
 
 
-def addition(a, b):  # сложение
-    return int(a) + int(b)
+def database_file():  # this function return name of database file
+    return 'users_database.json'
 
 
-def subtraction(a, b):  # вычитане
-    return int(a) - int(b)
+def input_operation():
+    choice = input('for authentication input 1\nfor registration input 2\n for exit input 3\n')
+    if choice in ('1', '2', '3'):
+        return choice
+    print('your input is wrong')
 
 
-def multiplication(a, b):  # умножение
-    return int(a) * int(b)
+def get_mail():
+    email = input('enter you email ')
+    return email
 
 
-def division(a, b):  # деление
-    try:
-        result = int(a) / int(b)
-    except ZeroDivisionError:
-        print('can not divide by zero')
-        result = None
-    return result
+def get_password():
+    password = input('enter you password ')
+    return password
 
 
-def exponentiation(a, b):  # возведение в степень
-    return int(a) ** int(b)
+def check_email(email, database):
+    for account in database:
+        if account['email'] == email:
+            return True
+    return False
 
 
-def is_number(string):
-    try:
-        int(string)
-        return True
-    except ValueError:
+def check_password(email, password, database):
+    for account in database:
+        if account['email'] == email and account['password'] == password:
+            return True
+    return False
+
+
+def authentication():
+    database = read_database()
+    if not database:
         return False
-
-
-def input_control(number):
-    if number == 'exit':
+    email = get_mail()
+    password = get_password()
+    if check_password(email, password, database):
+        print('authentication is OK')
         quit()
-    if is_number(number):
-        return number
-    print('you can input exit or numbers ONLY')
+    print('incorrect email or password')
+
+
+def registration():
+    while True:
+        email = get_mail()
+        password = get_password()
+        if len(email) > 2 and len(password) > 2:
+            print('please enter your password again')
+            if get_password() == password:
+                new_data = {'email': email, 'password': password}
+                if write_database(new_data):
+                    return True
+                else:
+                    return False
+            print('the entered passwords do not match')
+        else:
+            print('email or password is too short (must be more then 2 characters)')
+
+
+def read_database():
+    try:
+        with open(f'{database_file()}') as file:
+            database = json.load(file)
+        return database
+    except FileNotFoundError:
+        print('no one user is not registred please go to registration and try again')
+
+
+def write_database(new_data):
+    try:
+        with open(f'{database_file()}') as file:
+            database = json.load(file)
+        if check_email(new_data['email'], database):
+            return False
+    except FileNotFoundError:
+        database = []
+    database.append(new_data)
+    with open(f'{database_file()}', 'w') as file:
+        json.dump(database, file)
+    return True
 
 
 def app():
-    operation = None
-    operations = {'1': addition, '2': subtraction, '3': multiplication, '4': division, '5': exponentiation}
-    operations_list = {'1': 'addition', '2': 'subtraction', '3': 'multiplication', '4': 'division',
-                       '5': 'exponentiation'}
     while True:
-        print('to exit enter exit instead of any number')
-        a = input_control(input('enter first number\n'))
-        b = input_control(input('enter second number\n'))
-        operation_number = input_control(input(f'enter operation number\n{operations_list}\n'))
-        try:
-            operation = operations[operation_number]
-        except KeyError:
-            print('operation does not exist')
-        if a and b and operation:
-            print('result = ', operation(a, b))
-        else:
-            print('your input incorrect')
-        print('try again')
+        operation = input_operation()
+        if operation == '1':
+            authentication()
+        elif operation == '2':
+            if registration():
+                print('your registration is OK')
+            else:
+                print('this email is busy you can try to authentication or registration with other email')
+        elif operation == '3':
+            print('bye-bye')
+            quit()
 
 
 app()
