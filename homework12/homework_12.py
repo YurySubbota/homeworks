@@ -1,6 +1,7 @@
 class Moving:
     def __init__(self, name):
-        name = name
+        self.name = name
+
     def move(self):
         raise NotImplementedError('I do not understand this')
 
@@ -57,3 +58,4 @@ tiger1.move()
 car1.move()
 car1.launch()
 car1.move()
+print(car1.name)
