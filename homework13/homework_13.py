@@ -28,6 +28,7 @@ class DataStorage:
 
     def disconnect(self):
         if self.status == 'connected':
+            print('self.__file in disconnect DataStorage', self.__file)
             self.__file.close()
             self.status = 'disconnected'
             print(f'File {self.path} is closed now')
@@ -53,9 +54,13 @@ class DataStorageWrite(DataStorage):
         if self.status == 'connected':
             self.content.append(string_to_append)
             print(self.content)
-            json.dump(self.content, self.__file)
         else:
             print('File is disconnected. before append new string please use connect')
+
+    def disconnect(self):
+        json.dump(self.content, self.__file)
+        print('self.__file in disconnect DataStorageWrite', self.__file)
+        super().disconnect()
 
 
 storage1 = DataStorageWrite('s1.json')
