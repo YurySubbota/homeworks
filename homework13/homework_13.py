@@ -48,7 +48,10 @@ class DataStorageWrite(DataStorage):
                 self.status = 'connected'
             except FileNotFoundError:
                 self._create_storage()
-                self.connect()
+                with open(f'{self.path}', 'r') as self.__file:
+                    self.content = json.load(self.__file)
+                self.__file = open(f'{self.path}', 'w')
+                self.status = 'connected'
         else:
             print('File is connected. Before connect again please use disconnect')
 
