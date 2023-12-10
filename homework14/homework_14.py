@@ -1,17 +1,12 @@
 import json
 
 
-class IsNotList(Exception):
-    def __str__(self):
-        print('this json file format is not supported')
-
-
 class BaseHandler:
     def __init__(self, path):
         self.__path = path
         self.content = None
         self._file = None
-        
+
     @property
     def path(self):
         return self.__path
@@ -32,7 +27,7 @@ class JsonHandler(BaseHandler):
         try:
             with open(self.path, 'r') as self._file:
                 self.content = json.load(self._file)
-            raise IsNotList if not isinstance(self.content, list) else ...
+            print('this json file format is not supported') if not isinstance(self.content, list) else ...
             quit() if not isinstance(self.content, list) else ...
         except FileNotFoundError:
             pass
@@ -46,18 +41,14 @@ class JsonHandler(BaseHandler):
                 json.dump([], self._file)
             with open(self.path, 'r') as self._file:
                 self.content = json.load(self._file)
-        print('JsonHandler.read()')
         return self.content
 
     def append(self, new_string):
         self.content.append(new_string)
-        print(f'JsonHandler.append(){new_string}')
-
 
     def close(self):
         with open(self.path, 'w') as self._file:
-            json.dump(self.content, self._file)        
-        print('JsonHandler.close()')
+            json.dump(self.content, self._file)
 
 
 class TxtHandler(BaseHandler):
@@ -70,11 +61,10 @@ class TxtHandler(BaseHandler):
                 pass
             with open(self.path, 'r') as self._file:
                 self.content = self._file.read()
-        print('TxtHandler.read()')
+        return self.content
 
     def append(self, new_string):
         self.content += str(new_string)
-        print(f'TxtHandler.append(){new_string}')
 
     def close(self):
         if self.content is not None:
@@ -82,8 +72,6 @@ class TxtHandler(BaseHandler):
                 self._file.write(self.content)
         else:
             print('you must read before close')
-            
-        print('TxtHandler.close()')
 
 
 class FileWorker(BaseHandler):
@@ -99,7 +87,8 @@ class FileWorker(BaseHandler):
         quit('Can not open this file. Please try to open .json or .txt file only')
 
     def read(self):
-        self.handler.read()
+        self.content = self.handler.read()
+        return self.content
 
     def append(self, new_string):
         self.handler.append(new_string)
@@ -109,12 +98,15 @@ class FileWorker(BaseHandler):
 
 
 def app():
-    fw = FileWorker('path_to_file.json')
+    fw = FileWorker("path_to_file.json")
     content = fw.read()
-    fw.append('obj1')
-    fw.append('obj2')
+    print(content)
+    fw.append("Hello ")
+    fw.append("how ")
+    fw.append("are ")
+    fw.append("you ")
     fw.close()
+    print(fw.read())
 
 
 app()
-
