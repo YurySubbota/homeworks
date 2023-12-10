@@ -27,8 +27,7 @@ class JsonHandler(BaseHandler):
         try:
             with open(self.path, 'r') as self._file:
                 self.content = json.load(self._file)
-            print('this json file format is not supported') if not isinstance(self.content, list) else ...
-            quit() if not isinstance(self.content, list) else ...
+            quit('this json file format is not supported') if not isinstance(self.content, list) else ...
         except FileNotFoundError:
             pass
 
