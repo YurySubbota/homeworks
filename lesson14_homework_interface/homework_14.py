@@ -1,6 +1,16 @@
 import json
 
 
+class JsonIsNotList(Exception):
+    def __str__(self):
+        return 'this json file format is not supported'
+
+
+class IncorrectFileType(Exception):
+    def __str__(self):
+        return 'Can not open this file. Please try to open .json or .txt file only'
+
+
 class BaseHandler:
     def __init__(self, path):
         self.__path = path
@@ -27,19 +37,15 @@ class JsonHandler(BaseHandler):
         try:
             with open(self.path, 'r') as self._file:
                 self.content = json.load(self._file)
-            quit('this json file format is not supported') if not isinstance(self.content, list) else ...
-        except FileNotFoundError:
-            pass
-
-    def read(self):
-        try:
-            with open(self.path, 'r') as self._file:
-                self.content = json.load(self._file)
+            if not isinstance(self.content, list):
+                raise JsonIsNotList
         except FileNotFoundError:
             with open(self.path, 'w') as self._file:
                 json.dump([], self._file)
-            with open(self.path, 'r') as self._file:
-                self.content = json.load(self._file)
+
+    def read(self):
+        with open(self.path, 'r') as self._file:
+            self.content = json.load(self._file)
         return self.content
 
     def append(self, new_string):
@@ -76,14 +82,14 @@ class TxtHandler(BaseHandler):
 class FileWorker(BaseHandler):
     def __init__(self, path):
         super().__init__(path)
+        self.file_type = {'json': JsonHandler, 'txt': TxtHandler}
         self.handler = self.type_of_file()(self.path)
 
     def type_of_file(self):
-        if self.path.lower().endswith('.json'):  # if end of string .json
-            return JsonHandler
-        elif self.path.lower().endswith('.txt'):
-            return TxtHandler
-        quit('Can not open this file. Please try to open .json or .txt file only')
+        try:
+            return self.file_type[self.path.split('.')[-1].lower()]
+        except KeyError:
+            raise IncorrectFileType
 
     def read(self):
         self.content = self.handler.read()
