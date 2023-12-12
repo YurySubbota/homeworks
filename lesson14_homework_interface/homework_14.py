@@ -16,26 +16,19 @@ class BaseHandler:
         self.__path = path
         self.content = None
         self._file = None
+        try:
+            with open(self.path):
+                pass
+        except FileNotFoundError:
+            self.create_file()
 
     @property
     def path(self):
         return self.__path
 
-    def is_exist_json(self):
-        try:
-            with open(self.path):
-                pass
-        except FileNotFoundError:
-            with open(self.path, 'w') as file:
-                json.dump([], file)
-
-    def is_exist_txt(self):
-        try:
-            with open(self.path):
-                pass
-        except FileNotFoundError:
-            with open(self.path, 'w'):
-                pass
+    def create_file(self):
+        with open(self.path, 'w'):
+            pass
 
     def read(self):
         raise NotImplementedError
@@ -50,11 +43,14 @@ class BaseHandler:
 class JsonHandler(BaseHandler):
     def __init__(self, path):
         super().__init__(path)
-        self.is_exist_json()
         with open(self.path, 'r') as file:
             content = json.load(file)
         if not isinstance(content, list):
             raise JsonIsNotList
+
+    def create_file(self):
+        with open(self.path, 'w') as file:
+            json.dump([], file)
 
     def read(self):
         with open(self.path, 'r') as self._file:
@@ -71,7 +67,6 @@ class JsonHandler(BaseHandler):
 
 class TxtHandler(BaseHandler):
     def read(self):
-        self.is_exist_txt()
         with open(self.path, 'r') as self._file:
             self.content = self._file.read()
         return self.content
