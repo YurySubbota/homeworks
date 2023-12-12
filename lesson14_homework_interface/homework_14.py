@@ -50,7 +50,7 @@ class JsonHandler(BaseHandler):
 
     def create_file(self):
         with open(self.path, 'w') as file:
-            json.dump([], file)
+            file.write('[]')
 
     def read(self):
         with open(self.path, 'r') as self._file:
