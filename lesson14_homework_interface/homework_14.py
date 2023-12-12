@@ -21,6 +21,22 @@ class BaseHandler:
     def path(self):
         return self.__path
 
+    def is_exist_json(self):
+        try:
+            with open(self.path):
+                pass
+        except FileNotFoundError:
+            with open(self.path, 'w') as file:
+                json.dump([], file)
+
+    def is_exist_txt(self):
+        try:
+            with open(self.path):
+                pass
+        except FileNotFoundError:
+            with open(self.path, 'w'):
+                pass
+
     def read(self):
         raise NotImplementedError
 
@@ -34,14 +50,11 @@ class BaseHandler:
 class JsonHandler(BaseHandler):
     def __init__(self, path):
         super().__init__(path)
-        try:
-            with open(self.path, 'r') as self._file:
-                self.content = json.load(self._file)
-            if not isinstance(self.content, list):
-                raise JsonIsNotList
-        except FileNotFoundError:
-            with open(self.path, 'w') as self._file:
-                json.dump([], self._file)
+        self.is_exist_json()
+        with open(self.path, 'r') as file:
+            content = json.load(file)
+        if not isinstance(content, list):
+            raise JsonIsNotList
 
     def read(self):
         with open(self.path, 'r') as self._file:
@@ -58,14 +71,9 @@ class JsonHandler(BaseHandler):
 
 class TxtHandler(BaseHandler):
     def read(self):
-        try:
-            with open(self.path, 'r') as self._file:
-                self.content = self._file.read()
-        except FileNotFoundError:
-            with open(self.path, 'w'):
-                pass
-            with open(self.path, 'r') as self._file:
-                self.content = self._file.read()
+        self.is_exist_txt()
+        with open(self.path, 'r') as self._file:
+            self.content = self._file.read()
         return self.content
 
     def append(self, new_string):
