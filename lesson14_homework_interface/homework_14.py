@@ -84,19 +84,18 @@ class TxtHandler(BaseHandler):
 
 class FileWorker(BaseHandler):
     def __init__(self, path):
-        super().__init__(path)
         self.file_type = {'json': JsonHandler, 'txt': TxtHandler}
-        self.handler = self.type_of_file()(self.path)
+        self.handler = self.define_handler(path)(path)
 
-    def type_of_file(self):
+    def define_handler(self, path):
         try:
-            return self.file_type[self.path.split('.')[-1].lower()]
+            return self.file_type[path.split('.')[-1].lower()]
         except KeyError:
             raise IncorrectFileType
 
     def read(self):
-        self.content = self.handler.read()
-        return self.content
+        content = self.handler.read()
+        return content
 
     def append(self, new_string):
         self.handler.append(new_string)
