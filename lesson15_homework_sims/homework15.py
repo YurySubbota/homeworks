@@ -2,11 +2,11 @@ from random import randint
 
 
 class NotEnoughMoney(Exception):
-    def __init__(self, some_to_buy):
-        self.some_to_buy = some_to_buy
+    def __init__(self, thing_to_buy):
+        self.thing_to_buy = thing_to_buy
 
     def __str__(self):
-        return f"Not enough money to buy {self.some_to_buy}"
+        return f"Not enough money to buy {self.thing_to_buy}"
 
 
 class ChattelFirst(Exception):
@@ -49,8 +49,8 @@ class Human:
         return f"{self.name} - {self.money}, {self.property}"
 
     def is_chattel_in_property(self):
-        for property in self.property:
-            if property.type_of_property == 'chattel':
+        for prop in self.property:
+            if prop.type_of_property == 'chattel':
                 return True
 
     def work(self):
@@ -76,14 +76,15 @@ class Human:
             print(f'Congratulations! You have buy {some_property}')
 
     def sell(self, some_property):
-        for i in range(len(self.property) - 1):
-            if some_property == self.property[i]:
-                self.property.pop(i)
+        for prop in enumerate(self.property):
+            if some_property == prop[1]:
+                self.property.pop(prop[0])
                 self.money += some_property.price
                 print(f'You have sell {some_property}')
                 return
             else:
                 print(f'You do not have {some_property}')
+
 
 def app():
     john = Human("John")
