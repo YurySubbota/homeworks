@@ -5,7 +5,7 @@ product = []
 for i in 'name', 'proteins', 'fats', 'carbohydrates':
     product.append(input(f'input {i}'))
 
-cursor.execute('INSERT INTO products (name, proteins, fats, carbohydrates) '
+cursor.execute('INSERT INTO products_db (name, proteins, fats, carbohydrates) '
                'VALUES (%s, %s, %s, %s)',
                product)
 connection.commit()
