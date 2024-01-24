@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block one %}
+
+    <ul>
+        <p>Count of users : {{ count }}</p>
+        <p>Last 10 users</p>
+        {% for user in users %}
+            <li>{{ user }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
