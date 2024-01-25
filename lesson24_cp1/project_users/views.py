@@ -50,7 +50,7 @@ class RegistrationPageView(View):
     def post(self, request):
         email = request.POST.get('email')
         password = hashlib.md5(request.POST.get('password').encode()).hexdigest()
-        confirm_password = request.POST.get('confirm_password')
+        confirm_password = hashlib.md5(request.POST.get('confirm_password').encode()).hexdigest()
         try:
             first, second = email.split('@')
             before_dot, after_dot = second.split('.')
