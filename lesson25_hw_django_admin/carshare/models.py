@@ -12,7 +12,7 @@ class Auto(models.Model):
     vin_code = models.CharField(max_length=255)
     status = models.CharField(choices=CHOICES, max_length=255)
     auto_model = models.ForeignKey('AutoModel', max_length=255, on_delete=models.CASCADE)
-    user = models.ForeignKey('AutoUser', on_delete=models.CASCADE)
+    user = models.ForeignKey('AutoUser', null=True, blank=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return f'{self.vin_code[:3:]}***'
@@ -25,13 +25,18 @@ class Auto(models.Model):
 class AutoUser(models.Model):
     name = models.CharField(max_length=255)
     phone = models.CharField(max_length=255, unique=True)
-
+    def __str__(self):
+        return f'{self.phone}'
 
 class AutoBrand(models.Model):
-    image = models.ImageField(upload_to='images/')
+    image = models.ImageField(upload_to='images/', null=True, blank=True)
     brand = models.CharField(max_length=255)
-
+    def __str__(self):
+        return f'{self.brand}'
 
 class AutoModel(models.Model):
     name = models.CharField(max_length=255)
     brand = models.ForeignKey(AutoBrand, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.name}'

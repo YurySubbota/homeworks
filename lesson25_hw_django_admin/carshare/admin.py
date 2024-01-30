@@ -22,11 +22,11 @@ class AutoAdmin(admin.ModelAdmin):
 
 @admin.register(AutoModel)
 class AutoModelAdmin(admin.ModelAdmin):
-    list_display = ('count_of_auto', 'count_of_auto',)
+    list_display = ('name', 'count_of_auto', )
     list_filter = ('brand',)
 
     def count_of_auto(self, instance):
-        count = Auto.objects.filter(auto_model__auto__vin_code=instance.vin_code).count()
+        count = Auto.objects.filter(auto_model__vin_code=instance.name).count()
         return count
 
     count_of_auto.short_description = 'Auto'
@@ -48,3 +48,8 @@ class AutoBrandAdmin(admin.ModelAdmin):
         if not instance.image:
             return mark_safe(f'<b>without logo</b>')
         return mark_safe(f'<img src="{instance.image.url_image}" style="max-width: 25px">')
+
+
+@admin.register(AutoUser)
+class AutoUserAdmin(admin.ModelAdmin):
+    list_display = ('name', 'phone',)
