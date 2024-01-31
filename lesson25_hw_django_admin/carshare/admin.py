@@ -58,7 +58,7 @@ class AutoBrandAdmin(admin.ModelAdmin):
 @admin.register(AutoUser)
 class AutoUserAdmin(admin.ModelAdmin):
     list_display = ('name', 'phone', 'auto_in_use')
-
+    search_fields = ('phone',)
     def auto_in_use(self, instance):
         in_use = Auto.objects.get(user__name=instance.name)
         if in_use:
