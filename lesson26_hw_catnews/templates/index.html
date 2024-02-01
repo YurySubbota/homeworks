@@ -34,7 +34,7 @@
         }
     </style>
 
-    <form action="homepage" method="get">
+    <form action="" method="get">
         <select id="sort" name="sort">
             <option value="title" {% if request.GET.sort == 'title' %}selected{% endif %}>Заголовку</option>
             <option value="pub_date" {% if request.GET.sort == 'pub_date' %}selected{% endif %}>Дате</option>

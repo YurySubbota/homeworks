@@ -10,8 +10,8 @@ class HomePageView(View):
     DEFAULT_NEWS_PICTURE = 'media/default.jpg'
     sort_by = 'pub_date'
     def get(self, request, *args, **kwargs):
-        self.sort_by = self.request.GET.get('sort', 'pub_date')
-        order_by = self.request.GET.get('order', 'desc')
+        self.sort_by = self.request.GET.get('sort')
+        order_by = self.request.GET.get('order')
         self.sort_by = self.sort_by if order_by == 'asc' else f'-{self.sort_by}'
         print(self.sort_by)
         news = News.objects.order_by(self.sort_by)[:20]
