@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        .button {
+          border: none;
+          background-color: WhiteSmoke;
+          cursor: pointer;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+</head>
+<body>
+<button class="button" onclick="window.location.href='{% url 'homepage' %}'">Home Page</button>
+{#<button class="button" onclick="window.location.href='{% url 'registration' %}'">Registration</button>#}
+{#<button class="button" onclick="window.location.href='{% url 'authentication' %}'">Log in</button>#}
+{#<p>{{ username }}</p>#}
+<br><br>
+
+<h1>{{ title }}</h1>
+
+{% block one %}
+{% endblock %}
+    {% if message %}
+        <p>{{ message }}</p>
+    {% endif %}
+</body>
+</html>
