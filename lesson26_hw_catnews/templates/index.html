@@ -36,15 +36,15 @@
 
     <form action="" method="get">
         <select id="sort" name="sort">
-            <option value="title" {% if request.GET.sort == 'title' %}selected{% endif %}>Заголовку</option>
             <option value="pub_date" {% if request.GET.sort == 'pub_date' %}selected{% endif %}>Дате</option>
+            <option value="title" {% if request.GET.sort == 'title' %}selected{% endif %}>Заголовку</option>
             <option value="author" {% if request.GET.sort == 'author' %}selected{% endif %}>Автору</option>
             <option value="rating" {% if request.GET.sort == 'rating' %}selected{% endif %}>Рейтинг</option>
         </select>
         <label for="order">Направление:</label>
         <select id="order" name="order">
-            <option value="asc" {% if request.GET.order == 'asc' %}selected{% endif %}>По возрастанию</option>
             <option value="desc" {% if request.GET.order == 'desc' %}selected{% endif %}>По убыванию</option>
+            <option value="asc" {% if request.GET.order == 'asc' %}selected{% endif %}>По возрастанию</option>
         </select>
         <button>Submit</button>
     </form>
@@ -59,6 +59,7 @@
    <div>
      <h2 class="news-title">{{ news.title }}</h2>
      <p class="news-description">{{ news.body }}...</p>
+       <a class="Link" href="{% url 'news_page' news.id %}">Читать полностью</a>
    </div>
 </div>
 {% endfor %}

@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block one %}
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid black;
+            padding: 10px;
+        }
+        .search-bar {
+            width: 300px;
+        }
+        .news-item {
+            display: flex;
+            border: 1px solid black;
+            margin: 10px 0;
+            padding: 10px;
+        }
+        .news-image {
+            width: 200px;
+            height: 150px;
+            margin-right: 10px;
+        }
+        .news-title {
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .news-description {
+            font-size: 14px;
+        }
+    </style>
+
+
+<div class="news-item">
+    {% if news.picture %}
+   <img src="/media/{{ default_jpg }}" alt="" class="news-image">
+    {% else %}
+    <img src="{{ default_jpg }}" alt="" class="news-image">
+    {% endif %}
+   <div>
+     <h2 class="news-title">{{ news.title }}</h2>
+     <p class="news-description">{{ news.body }}</p>
+   </div>
+</div>
+
+
+<p>Автор: {{ news.author }}</p>
+
+
+{% endblock %}
