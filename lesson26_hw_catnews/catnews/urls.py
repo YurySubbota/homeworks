@@ -3,7 +3,5 @@ from .views import HomePageView, NewsPageView
 
 urlpatterns = [
     path('', HomePageView.as_view(), name='homepage'),
-    path('news/<int:id>/', NewsPageView.as_view(), name='news_page',),
-
-
+    path('news/<int:id>/', NewsPageView.as_view(), name='news_page'),
 ]
