@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block one %}
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid black;
+            padding: 10px;
+        }
+
+
+        .room-item {
+            display: flex;
+            border: 1px solid black;
+            margin: 10px 0;
+            padding: 10px;
+        }
+
+        .room-image {
+            width: 200px;
+            height: 150px;
+            margin-right: 10px;
+        }
+
+        .room-title {
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .room-description {
+            font-size: 14px;
+        }
+    </style>
+
+
+    <div class="room-item">
+        {% if room.picture %}
+            <img src="{{ room.picture }}" alt="" class="room-image">
+        {% else %}
+            <img src="{{ default_jpg }}" alt="" class="room-image">
+        {% endif %}
+        <div>
+            <h2 class="room-title">{{ room.title }}</h2>
+            <p class="room-description">{{ room.description }}</p>
+            <a class="Link" href="{% url 'new_comment' room.pk %}">Ответить</a>
+        </div>
+    </div>
+
+    <style>
+        .comment-item {
+            display: table;
+            border: 1px dotted black;
+            margin: 1px 0;
+            padding: 1px;
+        }
+
+    </style>
+    {% for comment in comments %}
+        <div class="comment-item" style="margin-left: {{ comment.indent }}px;">
+            <h2 class="room-title">{{ comment.nickname }}</h2>
+            <p class="room-description">{{ comment.content }}</p>
+            <p class="room-description">{{ comment.pk }}</p>
+            <p class="room-description">{{ comment.comment_id }}</p>
+
+
+            <a class="Link" href="{% url 'new_comment_for_comment' comment.pk %}">Ответить</a><br>
+        </div>
+    {% endfor %}
+
+
+
+
+{% endblock %}

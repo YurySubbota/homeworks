@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block one %}
+    <h1>{{ title }}</h1>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid black;
+            padding: 10px;
+        }
+
+
+        .room-item {
+            display: flex;
+            border: 1px solid black;
+            margin: 10px 0;
+            padding: 10px;
+        }
+
+        .room-image {
+            width: 200px;
+            height: 150px;
+            margin-right: 10px;
+        }
+
+        .room-title {
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .room-description {
+            font-size: 14px;
+        }
+    </style>
+
+    <div style="margin-left: {{ comments_indent.comments_indent }}px;">
+
+        <h2 class="room-title">{{ Comment.nickname }}</h2>
+        <p class="room-description">{{ Comment.content }}</p>
+    </div>
+
+    <div>
+
+        <div>
+            <h2 class="room-title">{{ Comment.nickname }}</h2>
+            <p class="room-description">{{ Comment.content }}</p>
+        </div>
+
+    </div>
+
+
+    <div class="features">
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ form.nickname }}
+            <br>
+            {{ form.content }}
+
+            <button type="submit">Добавить</button>
+        </form>
+    </div>
+
+
+
+{% endblock %}

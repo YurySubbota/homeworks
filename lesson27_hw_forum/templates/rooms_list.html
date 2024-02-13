@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block one %}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid black;
+            padding: 10px;
+        }
+
+        .search-bar {
+            width: 300px;
+        }
+
+        .room-item {
+            display: flex;
+            border: 1px solid black;
+            margin: 10px 0;
+            padding: 10px;
+        }
+
+        .room-image {
+            width: 200px;
+            height: 150px;
+            margin-right: 10px;
+        }
+
+        .room-title {
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .room-description {
+            font-size: 14px;
+        }
+    </style>
+
+
+    <form action="" method="get">
+
+        <label for="sort">Сортировать по:</label>
+        <select id="sort" name="sort">
+            <option value="created_at" {% if request.GET.sort == 'created_at' %}selected{% endif %}>Дате</option>
+            <option value="title" {% if request.GET.sort == 'title' %}selected{% endif %}>Заголовку</option>
+            <option value="popularity" {% if request.GET.sort == 'popularity' %}selected{% endif %}>Популярности
+            </option>
+        </select>
+
+        <label for="order">Направление:</label>
+        <select id="order" name="order">
+            <option value="desc" {% if request.GET.order == 'desc' %}selected{% endif %}>По убыванию</option>
+            <option value="asc" {% if request.GET.order == 'asc' %}selected{% endif %}>По возрастанию</option>
+        </select>
+        <button>Submit</button>
+    </form>
+
+    {% for room in rooms_list %}
+        <div class="room-item">
+            {% if news.picture %}
+                <img src="/media/{{ room.picture }}" alt="" class="room-image">
+            {% else %}
+                <img src="{{ default_jpg }}" alt="" class="room-image">
+            {% endif %}
+            <div>
+                <h2 class="room-title">{{ room.title }}</h2>
+                <p class="room-description">{{ room.description }}</p>
+                <a class="Link" href="{% url 'room' room.pk %}">Зайти в комнату</a>
+            </div>
+        </div>
+        <br>
+    {% endfor %}
+{% endblock %}
